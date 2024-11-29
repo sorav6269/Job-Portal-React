@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
-function Myapplication() {
+const Myapplication = () => {
+  const {user} = useContext()
   return (
     <div>Myapplication</div>
   )

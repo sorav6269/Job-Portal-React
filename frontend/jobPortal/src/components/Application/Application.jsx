@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { Context } from "../../main";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios"; // Make sure to import axios if not already
 
@@ -13,12 +13,12 @@ const Application = () => {
   const [address, setaddress] = useState("");
   const { isAuthorized, user } = useContext(Context);
   const navigateTo = useNavigate();
+  const { Id } = useParams()
 
   const handleFileChange = (event) => {
     const resume = event.target.files[0];
     setresume(resume);
   };
-
   const handleApplication = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -28,7 +28,7 @@ const Application = () => {
     formData.append("address", address);
     formData.append("coverLetter", coverLetter);
     formData.append("resume", resume);
-    formData.append("jobId", jobId ); // Replace 'id_value' with actual job ID
+    formData.append("jobId", Id); // Replace 'id_value' with actual job ID
 
     try {
       const { data } = await axios.post(
@@ -47,9 +47,9 @@ const Application = () => {
       setcoverletter("");
       setphone("");
       setaddress("");
-      setresume("");
+      setresume(null);
       toast.success(data.message);
-      navigateTo("/Job/getall");
+      // navigateTo("/Job/getall");
     } catch (error) {
       toast.error(error.response.data.message);
     }

@@ -8,10 +8,10 @@ const Jobdetails = () => {
   const { id } = useParams();
   const navigateTo = useNavigate();
   const { isAuthorized, user } = useContext(Context);
+
   const viewjobs = async () => {
     try {
       const { data } = await axios.get(`/jobportalApi/Jobdetails/${id}`);
-      // console.log(data.jobs)
       setJobs(data.jobs);
     } catch (error) {
       console.log(error);
@@ -25,7 +25,7 @@ const Jobdetails = () => {
   if (!isAuthorized) {
     navigateTo("/");
   }
-  // console.log(jobs)
+
   return (
     <>
       {/* <!-- Header End --> */}
@@ -80,24 +80,29 @@ const Jobdetails = () => {
                   <td>Category:</td>
                   <td>{jobs.catagory}</td>
                 </tr>
-                <tr>
-                  <td>FixedSalary:</td>
-                  <td>{jobs.fixedSalary}</td>
-                </tr>
-                <tr>
-                  <td>SalaryFrom:</td>
-                  <td>{jobs.salaryFrom}</td>
-                </tr>
-                <tr>
-                  <td>SalaryTo:</td>
-                  <td>{jobs.salaryTo}</td>
-                </tr>
+                {jobs.fixedSalary ? (
+                  <tr>
+                    <td>Fixed Salary:</td>
+                    <td>{jobs.fixedSalary}</td>
+                  </tr>
+                ) : (
+                  <>
+                    <tr>
+                      <td>Salary From:</td>
+                      <td>{jobs.salaryFrom}</td>
+                    </tr>
+                    <tr>
+                      <td>Salary To:</td>
+                      <td>{jobs.salaryTo}</td>
+                    </tr>
+                  </>
+                )}
                 <tr>
                   <td>Description:</td>
                   <td>{jobs.description}</td>
                 </tr>
                 <tr>
-                  <td>JobPostedOn:</td>
+                  <td>Job Posted On:</td>
                   <td>{jobs.jobPostOn}</td>
                 </tr>
                 <tr>

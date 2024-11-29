@@ -56,7 +56,6 @@ function Header() {
               </Link>
             </li>
             <li className="nav-item">
-             
               <Link
                 className="nav-link active"
                 to={"/Job/getall"}
@@ -94,6 +93,15 @@ function Header() {
                     onClick={() => setShow(false)}
                   >
                     VIEW YOUR JOBS
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className="nav-link active"
+                    to={"/Catageryinsert"}
+                    onClick={() => setShow(false)}
+                  >
+                    Category
                   </Link>
                 </li>
               </>

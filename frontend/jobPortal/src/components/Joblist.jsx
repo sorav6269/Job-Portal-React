@@ -11,7 +11,7 @@ const  Joblist= () => {
   const getalljob = async () => {
     try {
       const { data } = await axios.get("/jobportalApi/getalljobs");
-      console.log(data);
+      // console.log(data);
       setJobs(data);
     } catch (error) {
       console.log(error);

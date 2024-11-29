@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Context } from '../main'
 import axios from 'axios'
 import toast from 'react-hot-toast'
@@ -11,12 +11,29 @@ function Jobpost() {
     const [country, setcountry] = useState("");
     const [city, setcity] = useState("");
     const [location, setlocation] = useState("");
-    const [salaryFrom, setsalaryFrom] = useState("")
-    const [salaryTo, setsalaryTo] = useState("")
-    const [fixedSalary, setfixedSalary] = useState("")
     const [salaryType, setsalaryType] = useState("default")
-    const { isAuthorized, user } = useContext(Context)
-    
+    const [fixedSalary, setfixedSalary] = useState("")
+    const [salaryTo, setsalaryTo] = useState("")
+    const [salaryFrom, setsalaryFrom] = useState("")
+  const { isAuthorized, user } = useContext(Context)
+const [selectCategory, setselectCategory] = useState([]);
+
+  useEffect(() => {
+    const fetchCategory = async () => {
+      try {
+        const res = await axios.get("/jobportalApi/categoryDisplay"); // Change this if you need the full URL
+        console.log(res.data)
+        setselectCategory(res.data.Category);
+        
+        // Ensure the response structure matches
+      } catch (error) {
+        console.log("Error fetching category data:", error);
+      }
+    };
+
+    fetchCategory();
+  }, []);
+  
     const handleJobpost = async (e) => {
         e.preventDefault();
         if (salaryType === "Fixed Salary") {
@@ -78,9 +95,10 @@ function Jobpost() {
           });
     }
 
+  
     const navigateTo = useNavigate()
     if (!isAuthorized || (user && user.role !== "Employer")) {
-        navigateTo("/getalljobs");
+        navigateTo("/Job/getall");
     }
    return (
      <>
@@ -109,40 +127,17 @@ function Jobpost() {
                  <div className="mb-3">
                    <label htmlFor="">Category</label>
                    <select
-                     name=""
-                     className="form-control"
+                     id="category"
+                     className="form-select"
                      value={catagory}
                      onChange={(e) => setcatagory(e.target.value)}
                    >
                      <option value="">Select Category</option>
-                     <option value="Graphics & Design">
-                       Graphics & Design
-                     </option>
-                     <option value="Mobile App Development">
-                       Mobile App Development
-                     </option>
-                     <option value="Frontend Web Development">
-                       Frontend Web Development
-                     </option>
-                     <option value="MERN Stack Development">
-                       MERN STACK Development
-                     </option>
-                     <option value="Account & Finance">
-                       Account & Finance
-                     </option>
-                     <option value="Artificial Intelligence">
-                       Artificial Intelligence
-                     </option>
-                     <option value="Video Animation">Video Animation</option>
-                     <option value="MEAN Stack Development">
-                       MEAN STACK Development
-                     </option>
-                     <option value="MEVN Stack Development">
-                       MEVN STACK Development
-                     </option>
-                     <option value="Data Entry Operator">
-                       Data Entry Operator
-                     </option>
+                     {selectCategory.map((item, index) => (
+                       <option key={index} value={item.name}>
+                         {item.name}
+                       </option>
+                     ))}
                    </select>
                  </div>
                  <div className="mb-3">

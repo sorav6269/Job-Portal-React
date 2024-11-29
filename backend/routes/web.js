@@ -27,7 +27,8 @@ route.get("/jobseeker/GetAll",checkAuth,applicationController.jobseekerGetAllApp
 route.get("/delete/:id",checkAuth,applicationController.jobseekerDeleteApplication);
 
 // Category
-route.get('/categoryinsert', categorycontroller.categoryInsert)
+route.post('/categoryinsert', categorycontroller.categoryInsert)
 route.get("/categoryDisplay", categorycontroller.categoryDisplay);
 route.get("/categoryDelete/:id", categorycontroller.categoryDelete);
+route.get("/CategoryList/:name", categorycontroller.CategoryList);
 module.exports = route;

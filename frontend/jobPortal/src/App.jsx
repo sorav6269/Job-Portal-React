@@ -22,6 +22,8 @@ import Jobpost from "./components/Jobpost";
 import Application from "./components/Application/Application";
 import Myapplication from "./components/Application/Myapplication";
 import Resumemodel from "./components/Application/Resumemodel";
+import CategoryInsert from "./components/CategoryInsert";
+import CategoryList from "./components/CategoryList";
 
 
 
@@ -52,6 +54,8 @@ function App() {
         <Route path="/" element={<Index />} />
         <Route path="/About" element={<About />} />
         <Route path="/Catagery" element={<Catagery />} />
+        <Route path="/Catageryinsert" element={<CategoryInsert />} />
+        <Route path="/CategoridyList/:name" element={<CategoryList/>}/>
         <Route path="/Contact" element={<Contact />} />
         <Route path="/Error404" element={<Error404 />} />
         <Route path="/Jobdetails/:id" element={<Jobdetails />} />

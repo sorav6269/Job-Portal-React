@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Catagery = () => {
   const [Category, setCategory] = useState([]);
@@ -56,11 +57,13 @@ const Catagery = () => {
                 className="col-lg-3 col-sm-6 wow fadeInUp"
                 data-wow-delay="0.1s"
               >
-                <a className="cat-item rounded p-4" href="#">
-                  <i className={`${item.icon} text-primary mb-4`}></i>
-                  <h6 className="mb-3">{item.name}</h6>
-                  <p className="mb-0">{item.vacancy} Vacancy</p>
-                </a>
+                <Link to={`/CategoridyList/${item.name}`}>
+                  <a className="cat-item rounded p-4" href="#">
+                    <i className={`${item.icon} text-primary mb-4`}></i>
+                    <h6 className="mb-3">{item.name}</h6>
+                    <p className="mb-0">{item.vacancy}</p>
+                  </a>
+                </Link>
               </div>
             ))}
           </div>

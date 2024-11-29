@@ -1,4 +1,5 @@
 const categoryModel = require("../models/category");
+const jobModel = require("../models/job");
 
 class categorycontroller {
   static categoryInsert = async (req, res) => {
@@ -45,7 +46,28 @@ class categorycontroller {
         error: error.message,
       });
     }
-  };
+  };     
+
+
+  static CategoryList = async (req, res) => {
+    try {
+      const { name } = req.params;
+      // console.log(cname)
+      const CategoryList = await jobModel.find({ catagory: name });
+      console.log(CategoryList)
+      if (!CategoryList) {
+        return res.status(404).json({ message: "category not found" }
+          
+        )
+      } res.status(200).json({
+        success: true,
+        CategoryList,
+      })
+    }catch (error) {
+      console.log(error.message);
+      res.status(400).json({status:"failes",message:error})
+    }
+  }
 
   static categoryDelete = async (req, res) => {
     try {

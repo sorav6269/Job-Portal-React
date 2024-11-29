@@ -2,117 +2,117 @@ const jobModel = require("../models/job");
 const { application } = require("express");
 const applicationModel = require("../models/application");
 const cloudinary = require("cloudinary").v2;
-const mongoose  = require("mongoose"); // Ensure this is at the top of your file
-
-
+const mongoose = require("mongoose");
 
 class applicationController {
+  static postApplication = async (req, res) => {
+    try {
+      const { role } = req.userdata;
 
-static postApplication = async (req, res) => {
-  try {
-    const { role } = req.userdata;
-    if (role === "Employer") {
-      return res.status(400).json({
-        status: "failed",
-        message: "Employer not allowed to access this resource",
-      });
-    }
-    if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).json({
-        status: "failed",
-        message: "Resume file Required.",
-      });
-    }
-    const { resume } = req.files;
-    const allowedFormats = [
-      "image/png",
-      "image/jpeg",
-      "image/webp",
-      "application/pdf",
-    ];
-    if (!allowedFormats.includes(resume.mimetype)) {
-      return res.status(400).json({
-        status: "failed",
-        message: "Invalid file type. Please upload a valid format.",
-      });
-    }
-    const cloudinaryResponse = await cloudinary.uploader.upload(
-      resume.tempFilePath
-    );
+      if (role === "Employer") {
+        return res.status(400).json({
+          status: "failed",
+          message: "Employer not allowed to access this resource",
+        });
+      }
 
-    if (!cloudinaryResponse || cloudinaryResponse.err) {
-      console.error(
-        "Cloudinary Error:",
-        cloudinaryResponse.err || "unknown cloudinary error"
+      if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).json({
+          status: "failed",
+          message: "Resume file is required.",
+        });
+      }
+
+      const { resume } = req.files;
+      const allowedFormats = ["image/png", "image/jpeg", "image/webp"];
+      if (!allowedFormats.includes(resume.mimetype)) {
+        return res.status(400).json({
+          status: "failed",
+          message:
+            "Invalid file type. Please upload a png, jpeg, or webp file.",
+        });
+      }
+
+      const cloudinaryResponse = await cloudinary.uploader.upload(
+        resume.tempFilePath
       );
-      return res.status(400).json({
+      if (!cloudinaryResponse || cloudinaryResponse.error) {
+        throw new Error("Failed to upload to Cloudinary");
+      }
+
+      const { name, email, coverLetter, phone, address, Id } = req.body;
+      const applicantID = {
+        user: req.userdata._id,
+        role: "JobSeeker",
+      };
+
+
+      if (!Id) {
+        return res.status(400).json({
+          status: "failed",
+          message: "job Not found.",
+        });
+      }
+
+      
+
+      const jobDetails = await jobModel.findById(Id);
+      if (!jobDetails) {
+        return res.status(404).json({
+          status: "failed",
+          message: "Job not found.",
+        });
+      }
+
+      if (!name || !email || !coverLetter || !phone || !address) {
+        return res.status(400).json({
+          status: "failed",
+          message: "Please fill all fields.",
+        });
+      }
+
+      const employerID = {
+        user: jobDetails.postedBy,
+        role: "Employer",
+      };
+
+      if (!name || !email || !coverLetter || !phone || !address || !applicantID || !employerID || !resume){
+        return res.status(400).json({
+          status: "failed",
+          message: "Please fill all fields.",
+        });
+      }
+
+      
+      const application = await applicationModel.create({
+        name,
+        email,
+        coverLetter,
+        phone,
+        address,
+        applicantID: { user: req.userdata._id, role: "JobSeeker" },
+        employerID: { user: jobDetails.postedBy, role: "Employer" },
+        Id,
+        resume: {
+          public_id: cloudinaryResponse.public_id,
+          url: cloudinaryResponse.secure_url,
+        },
+      });
+
+      res.status(200).json({
+        success: true,
+        message: "Application submitted!",
+        application,
+      });
+    } catch (error) {
+      console.error("Server Error:", error.message);
+      res.status(500).json({
         status: "failed",
-        message: "Failed to upload resume to Cloudinary",
+        message: "An error occurred while processing the application.",
+        error: error.message,
       });
     }
-
-    const { name, email, coverLetter, phone, address, jobId } = req.body;
-
-    // Validate jobId format
-    if (!jobId) {
-      return res.status(400).json({
-        status: "failed",
-        message: "Invalid job ID format",
-      });
-    }
-console.log(jobId);
-    const jobDetails = await jobModel.findById(jobId);
-    if (!jobDetails) {
-      return res.status(404).json({
-        status: "failed",
-        message: "Job not found",
-      });
-    }
-
-    const applicantID = {
-      user: req.userdata._id,
-      role: "job Seeker",
-    };
-    const employerID = {
-      user: jobDetails.postedBy,
-      role: "Employer",
-    };
-
-    if (!name || !email || !coverLetter || !phone || !address || !resume) {
-      return res.status(400).json({
-        status: "failed",
-        message: "Please fill all fields",
-      });
-    }
-
-    const application = await applicationModel.create({
-      name,
-      email,
-      coverLetter,
-      phone,
-      address,
-      applicantID,
-      employerID,
-      resume: {
-        public_id: cloudinaryResponse.public_id,
-        url: cloudinaryResponse.secure_url,
-      },
-    });
-
-    res.status(200).json({
-      success: true,
-      message: "Application submitted!",
-      application,
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      status: "failed",
-      message: "An unexpected error occurred",
-    });
-  }
-};
-
+  };
 
   static employerGetAllApplications = async (req, res) => {
     try {

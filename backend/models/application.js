@@ -56,18 +56,6 @@ const ApplicationSchema = new mongoose.Schema(
       },
     },
 
-    jobId: {
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-      },
-      role: {
-        type: String,
-        enum: ["JobSeeker"],
-        required: true,
-      },
-    },
   },
   { timestamps: true }
 );
