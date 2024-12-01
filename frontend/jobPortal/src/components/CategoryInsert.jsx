@@ -1,8 +1,9 @@
 import axios from "axios";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 function CategoryInsert() {
-  const [categoryName, setCategory] = useState("");
+  const [name, setname] = useState("");
   const [icon, setIcon] = useState("");
   const [vacancy,setvacancy] = useState("")
 
@@ -10,15 +11,16 @@ function CategoryInsert() {
     e.preventDefault();
     try {
       const response = await axios.post("/jobportalApi/categoryInsert", {
-        categoryName,
+        name,
         icon,
+        vacancy,
       });
-      setCategory("");
+      setname("");
       setIcon("");
       setvacancy("")
-      alert(response.data.message || "Category inserted successfully!");
+      toast.success(response.data.message || "Category inserted successfully!");
     } catch (error) {
-      alert(error.response?.data?.message || "An error occurred");
+      toast(error.response?.data?.message || "An error occurred");
     }
   };
 
@@ -31,8 +33,8 @@ function CategoryInsert() {
             type="text"
             placeholder="Category Name"
             className="form-control"
-            value={categoryName}
-            onChange={(e) => setCategory(e.target.value)}
+            value={name}
+            onChange={(e) => setname(e.target.value)}
           />
         </div>
         <div className="mb-3">
@@ -49,12 +51,12 @@ function CategoryInsert() {
             type="text"
             placeholder="vacancy"
             className="form-control"
-            value={icon}
+            value={vacancy}
             onChange={(e) => setvacancy(e.target.value)}
           />
         </div>
         <div className="d-flex justify-content-center">
-          <button className="btn btn-outline-success" type="submit">
+          <button className="btn  btn-outline-success" type="submit">
             Submit
           </button>
         </div>

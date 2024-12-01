@@ -13,7 +13,7 @@ function CategoryList() {
     // setIsAuthorized(true);
     try {
       const { data } = await axios.get(`/jobportalApi/CategoryList/${name}`);
-      console.log(data.CategoryList);
+      // console.log(data.CategoryList);
 
       setcategoryData(data.CategoryList);
       

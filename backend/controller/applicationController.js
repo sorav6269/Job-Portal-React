@@ -8,38 +8,37 @@ class applicationController {
   static postApplication = async (req, res) => {
     try {
       const { role } = req.userdata;
-
       if (role === "Employer") {
         return res.status(400).json({
           status: "failed",
           message: "Employer not allowed to access this resource",
         });
       }
-
+      
       if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).json({
           status: "failed",
           message: "Resume file is required.",
         });
       }
-
+      
       const { resume } = req.files;
       const allowedFormats = ["image/png", "image/jpeg", "image/webp"];
       if (!allowedFormats.includes(resume.mimetype)) {
         return res.status(400).json({
           status: "failed",
           message:
-            "Invalid file type. Please upload a png, jpeg, or webp file.",
+          "Invalid file type. Please upload a png, jpeg, or webp file.",
         });
       }
-
+      
       const cloudinaryResponse = await cloudinary.uploader.upload(
         resume.tempFilePath
       );
       if (!cloudinaryResponse || cloudinaryResponse.error) {
         throw new Error("Failed to upload to Cloudinary");
       }
-
+      
       const { name, email, coverLetter, phone, address, Id } = req.body;
       const applicantID = {
         user: req.userdata._id,
@@ -50,7 +49,7 @@ class applicationController {
       if (!Id) {
         return res.status(400).json({
           status: "failed",
-          message: "job Not found.",
+          message: "jobs Not  found.",
         });
       }
 
@@ -63,6 +62,8 @@ class applicationController {
           message: "Job not found.",
         });
       }
+
+      console.log(jobDetails)
 
       if (!name || !email || !coverLetter || !phone || !address) {
         return res.status(400).json({

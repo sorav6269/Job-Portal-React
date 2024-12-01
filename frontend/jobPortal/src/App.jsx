@@ -49,22 +49,22 @@ function App() {
     <>
       <Header />
       <Routes>
-        <Route path="/Login" element={<Login />} />
-        <Route path="/Register" element={<Register />} />
-        <Route path="/" element={<Index />} />
-        <Route path="/About" element={<About />} />
-        <Route path="/Catagery" element={<Catagery />} />
+        <Route path="/Login" element={<Login />}/>
+        <Route path="/Register" element={<Register />}/>
+        <Route path="/" element={<Index />}/>
+        <Route path="/About" element={<About />}/>
+        <Route path="/Catagery" element={<Catagery />}/>
         <Route path="/Catageryinsert" element={<CategoryInsert />} />
         <Route path="/CategoridyList/:name" element={<CategoryList/>}/>
-        <Route path="/Contact" element={<Contact />} />
-        <Route path="/Error404" element={<Error404 />} />
-        <Route path="/Jobdetails/:id" element={<Jobdetails />} />
-        <Route path="/Jobpost" element={<Jobpost />} />
-        <Route path="/Job/getall" element={<Joblist />} />
-        <Route path="/Testimonal" element={<Testimonal />} />
-        <Route path="/application/:id" element={<Application />} />
-        <Route path="/application/me" element={<Myapplication />} />
-        <Route path="/resume/me" element={<Resumemodel />} />
+        <Route path="/Contact" element={<Contact />}/>
+        <Route path="/Error404" element={<Error404 />}/>
+        <Route path="/Jobdetails/:id" element={<Jobdetails/>}/>
+        <Route path="/Jobpost" element={<Jobpost />}/>
+        <Route path="/Job/getall" element={<Joblist />}/>
+        <Route path="/Testimonal" element={<Testimonal />}/>
+        <Route path="/application/:id" element={<Application />}/>
+        <Route path="/application/me" element={<Myapplication />}/>
+        <Route path="/resume/me" element={<Resumemodel />}/>
       </Routes>
       <Footer />
       <Toaster />

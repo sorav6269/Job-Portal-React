@@ -28,11 +28,11 @@ const Application = () => {
     formData.append("address", address);
     formData.append("coverLetter", coverLetter);
     formData.append("resume", resume);
-    formData.append("jobId", Id); // Replace 'id_value' with actual job ID
+    formData.append("Id", Id); // Replace 'id_value' with actual job ID
 
     try {
       const { data } = await axios.post(
-        "/jobportalApi/postApplication",
+        `/jobportalApi/postApplication ${Id}`,
         formData,
         {
           withCredentials: true,

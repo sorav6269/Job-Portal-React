@@ -23,6 +23,23 @@ const Index= ()=> {
   }, []);
 
   
+  const [selectCategory, setselectCategory] = useState([]);
+
+  useEffect(() => {
+    const fetchCategory = async () => {
+      try {
+        const res = await axios.get("/jobportalApi/categoryDisplay"); // Change this if you need the full URL
+        console.log(res.data);
+        setselectCategory(res.data.Category);
+
+        // Ensure the response structure matches
+      } catch (error) {
+        console.log("Error fetching category data:", error);
+      }
+    };
+
+    fetchCategory();
+  }, []);
   useEffect(() => {
     const fetchjobs = async () => {
       try {
@@ -137,11 +154,18 @@ const Index= ()=> {
                   />
                 </div>
                 <div className="col-md-4">
-                  <select className="form-select border-0">
-                    <option selected>Category</option>
-                    <option defaultValue="1">Category 1</option>
-                    <option defaultValue="2">Category 2</option>
-                    <option defaultValue="3">Category 3</option>
+                  <select
+                    id="category"
+                    className="form-select"
+                    value={selectCategory}
+                    onChange={(e) => setselectCategory(e.target.value)}
+                  >
+                    <option value="">Select Category</option>
+                    {selectCategory.map((item, index) => (
+                      <option key={index} value={item.name}>
+                        {item.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="col-md-4">
