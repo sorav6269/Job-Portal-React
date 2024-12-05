@@ -29,7 +29,7 @@ const Index= ()=> {
     const fetchCategory = async () => {
       try {
         const res = await axios.get("/jobportalApi/categoryDisplay"); // Change this if you need the full URL
-        console.log(res.data);
+        // console.log(res.data);
         setselectCategory(res.data.Category);
 
         // Ensure the response structure matches
@@ -44,7 +44,7 @@ const Index= ()=> {
     const fetchjobs = async () => {
       try {
         const {data} = await axios.get("/jobportalApi/getalljobs"); // Change this if you need the full URL
-        console.log(data);
+        // console.log(data);
         setJobs(data);
 
         // Ensure the response structure matches
@@ -300,9 +300,10 @@ const Index= ()=> {
             </ul>
             <div className="tab-content">
               <div id="tab-1" className="tab-pane fade show p-0 active">
-                {/* {jobs.slice(0,3)} */}
+           
                 {jobs.jobs &&
-                  jobs.jobs.map((element) => {
+                  jobs.jobs.slice(0,3).map((element) => {
+                   
                     return (
                       <>
                         <div className="job-item p-4 mb-4">

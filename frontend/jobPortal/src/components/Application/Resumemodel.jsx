@@ -1,9 +1,18 @@
 import React from 'react'
 
-function Resumemodel() {
+function Resumemodel({imageUrl,onClose}) {
   return (
-    <div>Resumemodel</div>
-  )
+    <>
+      <div className="resume-modal">
+        <div className="modal-content">
+          <span className="close" onClick={onClose}>
+            &times;
+          </span>
+          <img src={imageUrl} alt="resume" />
+        </div>
+      </div>
+    </>
+  );
 }
 
 export default Resumemodel

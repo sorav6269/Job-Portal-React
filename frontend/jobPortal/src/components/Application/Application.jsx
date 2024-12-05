@@ -13,7 +13,7 @@ const Application = () => {
   const [address, setaddress] = useState("");
   const { isAuthorized, user } = useContext(Context);
   const navigateTo = useNavigate();
-  const { Id } = useParams()
+  const { id } = useParams()
 
   const handleFileChange = (event) => {
     const resume = event.target.files[0];
@@ -28,11 +28,11 @@ const Application = () => {
     formData.append("address", address);
     formData.append("coverLetter", coverLetter);
     formData.append("resume", resume);
-    formData.append("Id", Id); // Replace 'id_value' with actual job ID
+    formData.append("jobId", id); // Replace 'id_value' with actual job ID
 
     try {
       const { data } = await axios.post(
-        `/jobportalApi/postApplication ${Id}`,
+        `/jobportalApi/postApplication`,
         formData,
         {
           withCredentials: true,
@@ -50,11 +50,14 @@ const Application = () => {
       setresume(null);
       toast.success(data.message);
       // navigateTo("/Job/getall");
+      // console.log(data);
     } catch (error) {
       toast.error(error.response.data.message);
     }
   };
 
+
+  
   if (!isAuthorized || (user && user.role === "Employer")) {
     navigateTo("/");
   }
@@ -132,9 +135,14 @@ const Application = () => {
               accept=".pdf, .png, .jpg, .jpeg"
               className="form-control"
               onChange={handleFileChange}
-            
-            
+              required  
             />
+            {resume && (
+              <div className="mt-2 text-muted">
+                <strong>File Selected</strong> {resume.name}
+              </div>
+)}
+
           </div>
           <div className="d-flex justify-content-center mt-3">
             <button
