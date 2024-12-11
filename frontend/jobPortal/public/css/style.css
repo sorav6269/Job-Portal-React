@@ -391,3 +391,7 @@
     padding-right: 0;
     border-right: none;
 }
+
+.loginbg{
+    background-image: url(../img/login.jpg);
+}

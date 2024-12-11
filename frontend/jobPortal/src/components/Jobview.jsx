@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../main";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const Jobview = () => {
   const [jobs, setJobs] = useState([]);
+  const [error,setError] = useState()
   const { isAuthorized } = useContext(Context);
+  const {Id} = useParams()
   const navigateTo = useNavigate();
 
   const getalljob = async () => {
@@ -20,6 +22,20 @@ const Jobview = () => {
   useEffect(() => {
     getalljob();
   }, []);
+
+const handleDelete = async (id) => {
+  if (!window.confirm("Are you sure you want to delete this job?")) {
+    return; // Exit if user cancels
+  }
+  try {
+    await axios.get(`/jobportalApi/deleteJob/${id}`);
+    // Update job list after successful deletion
+    setJobs(jobs.filter((Job) => job._id !== id));
+  } catch (err) {
+    console.error("Error deleting job:", err);
+    setError("Failed to delete the job.");
+  }
+};
 
   if (!isAuthorized) {
     navigateTo("/job/me");
@@ -78,15 +94,19 @@ const Jobview = () => {
                               </span>
                             )}
                           </p>
-
-                          {/* Deadline */}
-                          <small className="text-muted">
-                            <i className="far fa-calendar-alt text-primary me-2"></i>
-                            Date Line: {element.jobPostOn}
-                          </small>
-
-                          <i class="fa-regular fa-trash-can"></i>
-
+                          <p className="card-text text-truncate">
+                            {/* Deadline */}
+                            <small className="text-muted">
+                              <i className="far fa-calendar-alt text-primary me-2"></i>
+                              Date Line: {element.jobPostOn}
+                            </small>
+                          </p>
+                          <button
+                            className="btn btn-danger text-white bg-red-500 hover:bg-red-700 py-1 px-3 rounded"
+                            onClick={() => handleDelete(element._id)}
+                          >
+                            <i className="fa-solid fa-trash"></i>
+                          </button>
                         </div>
                       </div>
                     </div>

@@ -109,6 +109,16 @@ function Header() {
               <></>
             )}
 
+            <li className="nav-item">
+              <Link
+                className="nav-link active"
+                to={"/Contact"}
+                onClick={() => setShow(false)}
+              >
+                CONTACTS
+              </Link>
+            </li>
+
             <button className="btn btn-danger" onClick={handleLogout}>
               LOGOUT
             </button>

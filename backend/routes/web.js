@@ -20,11 +20,12 @@ route.post("/updateJob/:id", checkAuth, jobController.updateJob);
 route.get("/deleteJob/:id", checkAuth, jobController.deleteJob);
 route.get("/Jobdetails/:id", checkAuth, jobController.getSingleJob);
 
+
 // Application
 route.post("/postApplication",checkAuth,applicationController.postApplication);
 route.get("/employer/GetAll",checkAuth,applicationController.employerGetAllApplications);
 route.get("/jobseeker/GetAll",checkAuth,applicationController.jobseekerGetAllApplications);
-route.get("/delete/:id",checkAuth,applicationController.jobseekerDeleteApplication);
+route.get("/api/jobSeekerDelete/:id",checkAuth,applicationController.jobseekerDeleteApplication);
 
 // Category
 route.post('/categoryinsert', categorycontroller.categoryInsert)

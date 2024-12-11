@@ -163,14 +163,14 @@ class applicationController {
         });
       }
       const { id } = req.params;
-      const application = await applicationMdel.findById(id);
-      if (!application) {
+      const applications = await applicationModel.findById(id);
+      if (!applications) {
         res.status(400).json({
           status: false,
           message: "Application not found!",
         });
       }
-      await applicationMdel.deleteOne();
+      await applicationModel.deleteOne();
       res.status(200).json({
         success: true,
         message: "Application Deleted",

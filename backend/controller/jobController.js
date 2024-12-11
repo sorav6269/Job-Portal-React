@@ -12,6 +12,45 @@ class jobController {
     }
   };
 
+  static getMyJob = async (req, res) => {
+    try {
+      const { role, _id, name } = req.UserData; // use req.UserData consistently
+      if (role === "jobSeeker") {
+        return res.status(400).json({
+          status: "failed",
+          message: "You are not authorized to access this data",
+        });
+      }
+
+      // Fetch query parameters for sorting
+      const sortBy = req.query.sortBy || "createdAt"; // Default sorting by createdAt
+      const order = req.query.order === "desc" ? -1 : 1; // Default is ascending order (1), descending (-1)
+
+      // Fetch jobs where the employer's ID matches the user's ID and apply sorting
+      const jobs = await jobModel
+        .find({ postedBy: _id })
+        .sort({ [sortBy]: order });
+
+      if (!jobs.length) {
+        return res.status(404).json({
+          status: "failed",
+          message: "No jobs found for this employer.",
+        });
+      }
+
+      return res.status(200).json({
+        status: "success",
+        message: ` Jobs Posted by ${name}`,
+        jobs,
+      });
+    } catch (error) {
+      console.error(error);
+      return res
+        .status(500)
+        .json({ status: "failed", message: "Internal server error." });
+    }
+  };
+
   static postjob = async (req, res) => {
     try {
       const { role } = req.userdata;
@@ -74,21 +113,6 @@ class jobController {
     }
   };
 
-  static getMyJob = async (req, res) => {
-    try {
-      const { role } = req.userdata;
-      if (role === "job Seeker") {
-        res.status(400).json({
-          status: "failed",
-          message: "job Seeker not allow to access this resource",
-        });
-      }
-      const Jobs = await jobModel.find({ postedBy: req.userdata._id });
-      res.status(200).json({ success: true, Jobs });
-    } catch (error) {
-      console.log(error);
-    }
-  };
   static updateJob = async (req, res) => {
     try {
       const { role } = req.userdata;

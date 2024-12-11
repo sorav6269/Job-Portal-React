@@ -38,10 +38,10 @@ function Myapplication() {
 
   const deleteApplication = async (id) => {
     try {
-      const { data } = await axios.delete(`/api/jobSeekerDelete/${id}`, {
+      const { data } = await axios.get(`/api/jobSeekerDelete/${id}`, {
         withCredentials: true,
       });
-      toast.success(data.message);
+      toast.success(data.message || "Application Delete Successfully");
       setApplications((prev) =>
         prev.filter((application) => application._id !== id)
       );
@@ -61,7 +61,7 @@ function Myapplication() {
 
   return (
     <section className="my_applications page">
-      {user?.role === "JobSeeker" ? (
+      {user?.role === "job Seeker" ? (
         <div className="container">
           <h1 className="text-3xl">My Applications</h1>
           {applications.length === 0 ? (
@@ -93,14 +93,16 @@ function Myapplication() {
           )}
         </div>
       )}
-      {modalOpen && <ResumeModal imageUrl={resumeImageUrl} onClose={closeModal} />}
+      {modalOpen && (
+        <ResumeModal imageUrl={resumeImageUrl} onClose={closeModal} />
+      )}
     </section>
   );
 }
 
 const JobSeekerCard = ({ element, deleteApplication, openModal }) => (
-  <div className="job_seeker_card">
-    <div className="detail">
+  <div className="job_seeker_card ">
+    <div className="detail card">
       <p className="text-2xl">
         <span>Name:</span> {element.name}
       </p>
@@ -123,9 +125,10 @@ const JobSeekerCard = ({ element, deleteApplication, openModal }) => (
         alt="Resume"
         onClick={() => openModal(element.resume.url)}
       />
+      
     </div>
-    <div className="btn_area">
-      <button onClick={() => deleteApplication(element._id)}>Delete Application</button>
+    <div >
+      <button className="btn btn-danger" onClick={() => deleteApplication(element._id)}>Delete Application</button>
     </div>
   </div>
 );

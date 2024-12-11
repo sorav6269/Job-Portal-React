@@ -36,7 +36,8 @@ const Login = () => {
   }
   return (
     <>
-      <div className="container-fluid ">
+      <div className="container  ">
+      
         <div className="col-md-4 mx-auto mt-5">
           <div
             className="card shadow-lg  cardhover "
@@ -87,7 +88,7 @@ const Login = () => {
                 </div>
 
                 <button
-                  className="btn btn-danger mt-1 "  
+                  className="btn btn-danger mt-1 "
                   style={{ marginLeft: "100px", backgroundColor: "brown" }}
                   onClick={handleLogin}
                 >

@@ -268,7 +268,7 @@ const Index= ()=> {
                 <i className="fa fa-check text-primary me-3"></i>Clita duo justo
                 magna dolore erat amet
               </p>
-              <a className="btn btn-primary py-3 px-5 mt-3" href="">
+              <a className="btn btn-primary py-3 px-5 mt-3" href="/About">
                 Read More
               </a>
             </div>
@@ -300,10 +300,8 @@ const Index= ()=> {
             </ul>
             <div className="tab-content">
               <div id="tab-1" className="tab-pane fade show p-0 active">
-           
                 {jobs.jobs &&
-                  jobs.jobs.slice(0,3).map((element) => {
-                   
+                  jobs.jobs.slice(0, 3).map((element) => {
                     return (
                       <>
                         <div className="job-item p-4 mb-4">
