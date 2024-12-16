@@ -5,7 +5,17 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 const Jobview = () => {
   const [jobs, setJobs] = useState([]);
-  const [error,setError] = useState()
+  const [error, setError] = useState()
+  const [title, settitle] = useState("");
+    const [description, setdescription] = useState("");
+      const [catagory, setcatagory] = useState("");
+      const [country, setcountry] = useState("");
+      const [city, setcity] = useState("");
+      const [location, setlocation] = useState("");
+      const [salaryType, setsalaryType] = useState("default")
+      const [fixedSalary, setfixedSalary] = useState("")
+      const [salaryTo, setsalaryTo] = useState("")
+      const [salaryFrom, setsalaryFrom] = useState("")
   const { isAuthorized } = useContext(Context);
   const {Id} = useParams()
   const navigateTo = useNavigate();
@@ -35,7 +45,39 @@ const handleDelete = async (id) => {
     console.error("Error deleting job:", err);
     setError("Failed to delete the job.");
   }
-};
+  };
+  
+  const handleupdate = async () => {
+     e.preventDefault();
+    try {
+   const data =  await axios.post(`localhost:8000/jobportalApi/updateJob/${Id}`, {
+        title,
+        description,
+        catagory,
+        country,
+        city,
+        location,
+        fixedSalary,
+        salaryFrom,
+        salaryTo
+      });
+        settitle("");
+        setdescription("");
+        setcatagory("default");
+        setcity("");
+        setcountry("");
+        setlocation("");
+        setfixedSalary("");
+        setsalaryFrom("");
+      setsalaryTo("");
+      navigateTo('/')
+
+    } catch (error) {
+      console.error("Error update job:", error);
+      setError("Failed to update the job.");
+    }
+  }
+
 
   if (!isAuthorized) {
     navigateTo("/job/me");
@@ -90,7 +132,7 @@ const handleDelete = async (id) => {
                               <span>{element.fixedSalary}</span>
                             ) : (
                               <span>
-                                {element.fixedSalary}-{element.salaryTo}
+                                {element.salaryFrom}-{element.salaryTo}
                               </span>
                             )}
                           </p>
@@ -102,10 +144,16 @@ const handleDelete = async (id) => {
                             </small>
                           </p>
                           <button
-                            className="btn btn-danger text-white bg-red-500 hover:bg-red-700 py-1 px-3 rounded"
+                            className="btn btn-danger text-white bg-red-500 hover:bg-red-700 py-1 px-3  rounded"
                             onClick={() => handleDelete(element._id)}
                           >
                             <i className="fa-solid fa-trash"></i>
+                          </button>
+                          <button
+                            className="btn btn-danger text-white bg-red-500 hover:bg-red-700 py-1 px-3 mx-5  rounded"
+                          
+                          >
+                            <i class="fa-solid fa-pen-to-square"></i>
                           </button>
                         </div>
                       </div>

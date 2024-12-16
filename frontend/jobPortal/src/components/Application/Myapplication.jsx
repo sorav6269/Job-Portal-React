@@ -14,7 +14,7 @@ function Myapplication() {
 
   useEffect(() => {
     if (!isAuthorized) {
-      navigateTo("/");
+      navigateTo("/application/me");
       return;
     }
 
@@ -38,7 +38,7 @@ function Myapplication() {
 
   const deleteApplication = async (id) => {
     try {
-      const { data } = await axios.get(`/api/jobSeekerDelete/${id}`, {
+      const { data } = await axios.get(`/jobportalApi/jobSeekerDelete/${id}`, {
         withCredentials: true,
       });
       toast.success(data.message || "Application Delete Successfully");

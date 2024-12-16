@@ -30,7 +30,7 @@ function Header() {
           href="index.html"
           className="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5"
         >
-          <h2 className="m-0 text-primary">PNJOB PORTAL</h2>
+          <h2 className="m-0 text-primary">PNJOB</h2>
         </a>
         <button
           type="button"
@@ -116,6 +116,16 @@ function Header() {
                 onClick={() => setShow(false)}
               >
                 CONTACTS
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link active" to={"/profile/me"}>
+                <img
+                  src="/img/3d.jpg"
+                  alt="UserAvatar"
+                  className="rounded-circle border border-white shadow "
+                  style={{ width: "3rem", height: "3rem", marginTop:"-20%" }}
+                />
               </Link>
             </li>
 

@@ -110,7 +110,7 @@ const  Joblist= () => {
                                     <span>{element.fixedSalary}</span>
                                   ) : (
                                     <span>
-                                      {element.fixedSalary}-{element.salaryTo}
+                                      {element.salaryFrom}-{element.salaryTo}
                                     </span>
                                   )}
                                 </span>

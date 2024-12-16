@@ -10,7 +10,8 @@ const route = express.Router();
 route.get("/getuser",checkAuth,userController.getuser);
 route.post("/Registeruser",userController.Registeruser); 
 route.post("/login",userController.login);
-route.get("/logout",userController.logout);
+route.get("/logout", userController.logout);
+route.get("/profile",checkAuth,userController.profile)
 
 // job
 route.get("/getalljobs",checkAuth, jobController.getalljobs);
@@ -25,7 +26,7 @@ route.get("/Jobdetails/:id", checkAuth, jobController.getSingleJob);
 route.post("/postApplication",checkAuth,applicationController.postApplication);
 route.get("/employer/GetAll",checkAuth,applicationController.employerGetAllApplications);
 route.get("/jobseeker/GetAll",checkAuth,applicationController.jobseekerGetAllApplications);
-route.get("/api/jobSeekerDelete/:id",checkAuth,applicationController.jobseekerDeleteApplication);
+route.get("/jobSeekerDelete/:id",checkAuth,applicationController.jobseekerDeleteApplication);
 
 // Category
 route.post('/categoryinsert', categorycontroller.categoryInsert)

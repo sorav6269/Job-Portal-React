@@ -25,6 +25,7 @@ import Resumemodel from "./components/Application/Resumemodel";
 import CategoryInsert from "./components/CategoryInsert";
 import CategoryList from "./components/CategoryList";
 import Jobview from "./components/Jobview";
+import Profile from "./components/Profile";
 
 
 
@@ -67,6 +68,7 @@ function App() {
         <Route path="/application/me" element={<Myapplication />} />
         <Route path="/resume/me" element={<Resumemodel />} />
         <Route path="/job/me" element={<Jobview />} />
+        <Route path="/profile/me" element={<Profile/>} />
       </Routes>
       <Footer />
       <Toaster />
