@@ -14,6 +14,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       require: true,
     },
+    confirmpassword: {
+      type: String,
+      require: true,
+    },
     phone: {
       type: String,
       require: true,
@@ -22,8 +26,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       require: true,
     },
-
-    
   },
   { timestamps: true }
 );

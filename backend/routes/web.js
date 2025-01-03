@@ -11,7 +11,8 @@ route.get("/getuser",checkAuth,userController.getuser);
 route.post("/Registeruser",userController.Registeruser); 
 route.post("/login",userController.login);
 route.get("/logout", userController.logout);
-route.post("/updatep", userController.updateProfile);
+route.post("/updatep", checkAuth, userController.updateProfile);
+route.post("/changePassword",checkAuth, userController.changePassword);
 
 
 // job

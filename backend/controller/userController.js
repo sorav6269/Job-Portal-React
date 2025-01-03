@@ -139,25 +139,81 @@ class userController {
 
   static updateProfile = async (req, res) => {
     try {
-      const id  = req.userdata;
-      const { name, email } = req.body;
-      // console.log(id)
-        const user = await userModel.findById(id);
-        var data = {
-          name: name,
-          email: email
-        };
-      
-      console.log(data)
+      const { id } = req.userdata; // Extract the user ID from the request
+      const { name, email } = req.body; // Extract name and email from the request body
 
-      const updateuserProfile = await userModel.findByIdAndUpdate(id,data);
+      // Construct the update data object
+      const data = {
+        name,
+        email,
+      };
+      // Update the user profile in the database
+      const updateUserProfile = await userModel.findByIdAndUpdate(id, data, {
+        new: true, // Return the updated document
+        runValidators: true, // Ensure validation rules are applied
+      });
+      // console.log(data)
+      // Send a success response with the updated profile
       res.status(200).json({
         success: true,
-        updateuserProfile,
+        updateUserProfile,
       });
-      // console.log(updateuserProfile);
+    } catch (error) {
+      // Log the error for debugging
+      console.error(error);
+
+      // Send an error response
+      res.status(500).json({
+        success: false,
+        message: "Failed to update profile. Please try again later.",
+      });
+    }
+  };
+
+  static changePassword = async (req, res) => {
+    try {
+      const { id } = req.userdata;
+      const { password, newpassword, confirmpassword } = req.body;
+      if (password && newpassword && confirmpassword ) {
+        const user = await userModel.findById(id);
+      // console.log(user)
+        const isMatch = await bcrypt.compare(password, user.password);
+        // console.log(isMatch)
+        if (!isMatch) {
+          return res.status(401).json({
+            status: "failed",
+            message: "current password is incorrect",
+          });
+        } else {
+          if (newpassword != confirmpassword) {
+            return res.status(401).json({
+              status: "failed",
+              message: "Password does not match",
+            });
+          } else {
+            const newhashpassword = await bcrypt.hash(newpassword, 10);
+            await userModel.findByIdAndUpdate(id, {
+              password: newhashpassword,
+            });
+             return res.status(201).json({
+               status: "success",
+               message: "Password Update Successfully",
+             });
+          }
+        }
+      } else {
+        
+         return res.status(201).json({
+           status: "failed",
+           message: "All field are rquired",
+         });
+      }
     } catch (error) {
       console.log(error);
+       res.status(500).json({
+         success: false,
+         message: "Failed to update password. Please try again.",
+       });
     }
   };
 }

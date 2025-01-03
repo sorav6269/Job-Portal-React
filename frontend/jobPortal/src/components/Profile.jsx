@@ -9,6 +9,38 @@ function Profile() {
   const navigate = useNavigate();
   const { id } = useParams(); // Use useParams inside the component
   const { isAuthorized, setIsAuthorized, user, setUser } = useContext(Context);
+  const { password, setpassword } = useState("")
+  const { newpassword, setnewpassword } = useState("")
+  const {confirmpassword,setconfirmpassword} = useState("")
+  const [updatepassword, setupdatepassword] = useState({
+    password,
+    newpassword,
+    confirmpassword,
+
+  });
+
+
+  // Handle profile update form submission
+  const handlepasswordSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `/jobportalApi/changePassword`,
+        updatepassword
+      ); // Replace with your API endpoint
+      toast.success(response.data.message || "Profile updated successfully!");
+      setnewpassword("")
+      setpassword("")
+      setconfirmpassword("")
+      setupdatepassword("")
+      navigate("/profile/me"); // Redirect to the profile or another page
+    } catch (error) {
+      const errorMessage =
+        error.response?.message ||
+        "Failed to update profile. Please try again.";
+      toast.error(errorMessage);
+    }
+  };
 
   // State to hold the profile update data
   const [Profileupdate, setProfileupdate] = useState({
@@ -26,10 +58,7 @@ function Profile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        `/jobportalApi/updatep`,
-      {name,email}
-      ); // Replace with your API endpoint
+      const response = await axios.post(`/jobportalApi/updatep`, Profileupdate); // Replace with your API endpoint
       toast.success(response.data.message || "Profile updated successfully!");
       console.log(response.data.message);
       navigate("/profile/me"); // Redirect to the profile or another page
@@ -51,9 +80,13 @@ function Profile() {
         setProfileupdate({
           name: response.data.name || "",
           email: response.data.email || "",
+       
         });
 
-          
+        setupdatepassword({
+          pasword: response.data.password || "",
+          confirmpassword: response.data.confirmpassword || "",
+        });
       } catch (error) {
         setIsAuthorized(false);
         console.error("Fetch User Error:", error);
@@ -85,7 +118,7 @@ function Profile() {
             data-bs-target="#a"
           >
             <Link
-              to={`/Profilepdate/${Profileupdate.id}`}
+              onChange={`/profile/me/${Profileupdate._id}`}
               className="btn btn-primary"
             >
               Edit Profile
@@ -96,7 +129,12 @@ function Profile() {
             data-bs-toggle="modal"
             data-bs-target="#password"
           >
-            Edit Password
+            <Link
+              onChange={`/profile/me/${updatepassword._id}`}
+              className="btn btn-primary"
+            >
+              Edit Password
+            </Link>
           </button>
         </div>
       </form>
@@ -150,7 +188,7 @@ function Profile() {
       </div>
 
       {/* Modal for password update */}
-      {/* <div className="modal" id="password">
+      <div className="modal" id="password">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
@@ -165,33 +203,52 @@ function Profile() {
               ></button>
             </div>
             <div className="modal-body">
-              <form encType="multipart/form-data">
+              <form method="post" encType="multipart/form-data">
                 <div className="mb-3">
                   <label htmlFor="currentPassword">Current Password</label>
                   <input
                     type="password"
-                    id="currentPassword"
-                    name="currentPassword"
+                    id="password"
+                    name="password"
                     className="form-control"
+                    value={password}
+                    onChange={(e) => setpassword(e.target.value)}
                   />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="newPassword">New Password</label>
                   <input
                     type="password"
-                    id="newPassword"
-                    name="newPassword"
+                    id="password"
+                    name="password"
                     className="form-control"
+                    value={newpassword}
+                    onChange={(e) => setnewpassword(e.target.value)}
                   />
                 </div>
-                <button type="submit" className="btn btn-success">
+                <div className="mb-3">
+                  <label htmlFor="newPassword">confirmPassword</label>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    className="form-control"
+                    value={confirmpassword}
+                    onChange={(e) => setconfirmpassword(e.target.value)}
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="btn btn-success"
+                  onClick={handlepasswordSubmit}
+                >
                   Update Password
                 </button>
               </form>
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
     </>
   );
 }
