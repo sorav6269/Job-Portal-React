@@ -39,7 +39,7 @@ const ApplicationSchema = new mongoose.Schema(
       },
       role: {
         type: String,
-        enum: ["JobSeeker"],
+        enum: ["job Seeker"],
         required: true,
       },
     },
@@ -55,7 +55,6 @@ const ApplicationSchema = new mongoose.Schema(
         required: true,
       },
     },
-
   },
   { timestamps: true }
 );

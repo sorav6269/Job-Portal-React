@@ -15,7 +15,7 @@ class jobController {
   static getMyJob = async (req, res) => {
     try {
       const { role, _id, name } = req.UserData; // use req.UserData consistently
-      if (role === "jobSeeker") {
+      if (role === "job Seeker") {
         return res.status(400).json({
           status: "failed",
           message: "You are not authorized to access this data",

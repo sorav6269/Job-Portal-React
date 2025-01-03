@@ -11,7 +11,8 @@ route.get("/getuser",checkAuth,userController.getuser);
 route.post("/Registeruser",userController.Registeruser); 
 route.post("/login",userController.login);
 route.get("/logout", userController.logout);
-route.get("/profile",checkAuth,userController.profile)
+route.post("/updatep", userController.updateProfile);
+
 
 // job
 route.get("/getalljobs",checkAuth, jobController.getalljobs);

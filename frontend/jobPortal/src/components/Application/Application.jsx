@@ -47,7 +47,7 @@ const Application = () => {
       setcoverletter("");
       setphone("");
       setaddress("");
-      setresume(null);
+      setresume("");
       toast.success(data.message);
       // navigateTo("/Job/getall");
       // console.log(data);

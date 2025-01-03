@@ -5,14 +5,14 @@ const jwt = require("jsonwebtoken");
 class userController {
   static Registeruser = async (req, res) => {
     try {
-      const { name, email, password, cpassword, phone, role, image } = req.body;
+      const { name, email, password, cpassword, phone, role } = req.body;
       const user = await userModel.findOne({ email: email });
       if (user) {
         res
           .status(401)
           .json({ status: "Faild", message: "email already exists" });
       } else {
-        if (name && email && password && cpassword && phone && role && image) {
+        if (name && email && password && cpassword && phone && role) {
           if (password === cpassword) {
             const hashPassword = await bcrypt.hash(password, 10);
             const result = new userModel({
@@ -21,7 +21,6 @@ class userController {
               password: hashPassword,
               phone: phone,
               role: role,
-              image:image,
             });
             await result.save();
             // generate token
@@ -137,18 +136,31 @@ class userController {
       res.status(400).json({ status: "failed", message: error.message });
     }
   };
-  static profile = async (req, res) => {
+
+  static updateProfile = async (req, res) => {
     try {
-      const { name,  email,image } = req.userdata;
-      res.status(201).json("profile", {
-        name: name,
-        image:image,
-        email: email,
+      const id  = req.userdata;
+      const { name, email } = req.body;
+      // console.log(id)
+        const user = await userModel.findById(id);
+        var data = {
+          name: name,
+          email: email
+        };
+      
+      console.log(data)
+
+      const updateuserProfile = await userModel.findByIdAndUpdate(id,data);
+      res.status(200).json({
+        success: true,
+        updateuserProfile,
       });
+      // console.log(updateuserProfile);
     } catch (error) {
-            res.status(400).json({ status: "not show Profile", message: error.message });
+      console.log(error);
     }
   };
 }
 
 module.exports = userController;
+ 

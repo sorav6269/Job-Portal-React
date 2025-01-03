@@ -112,7 +112,7 @@ class applicationController {
   static employerGetAllApplications = async (req, res) => {
     try {
       const { role } = req.userdata;
-      if (role === "Job Seeker") {
+      if (role === "job Seeker ") {
         res.status(400).json({
           status: "failed",
           message: "Job Seeker not alowed to access this resource..",
